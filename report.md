@@ -1,11 +1,10 @@
-[markdown cheetsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)  
+[markdown cheetsheet](https://guides.github.com/features/mastering-markdown/)  
 # Part I  
 ## Q1  
 * Describe the network architecture for the encoder:  
 
 
 * for the decoder model:  
-
 * what kind of RNNs are used?  
 
 * What are the dimensions of the various layers?  
