@@ -55,6 +55,7 @@ class EncoderRNN(nn.Module):
     # for each new example. The backward function is automatically
     # defined for us by autograd.
     def forward(self, input, hidden):
+        # embedded shape [1, 256], after reshape [1, 1, 256]
         embedded = self.embedding(input).view(1, 1, -1)
         output = embedded
         for i in range(self.n_layers):
