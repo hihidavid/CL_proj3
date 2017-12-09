@@ -1,0 +1,50 @@
+Reading lines in data/en_bg.train.txt
+Read 4997 word pairs
+Vocabulary statistics
+bg 85
+en 31
+0m 51s (- 16m 10s) (1000 5%) 2.4388
+1m 40s (- 15m 8s) (2000 10%) 1.9816
+2m 33s (- 14m 27s) (3000 15%) 1.5319
+3m 24s (- 13m 39s) (4000 20%) 1.2404
+4m 16s (- 12m 49s) (5000 25%) 1.0329
+5m 7s (- 11m 58s) (6000 30%) 0.9632
+5m 59s (- 11m 7s) (7000 35%) 0.9344
+6m 51s (- 10m 17s) (8000 40%) 0.8658
+7m 43s (- 9m 26s) (9000 45%) 0.7848
+8m 36s (- 8m 36s) (10000 50%) 0.7454
+9m 28s (- 7m 45s) (11000 55%) 0.6713
+10m 20s (- 6m 53s) (12000 60%) 0.6946
+11m 12s (- 6m 1s) (13000 65%) 0.5767
+12m 4s (- 5m 10s) (14000 70%) 0.6563
+12m 56s (- 4m 18s) (15000 75%) 0.6349
+13m 48s (- 3m 27s) (16000 80%) 0.5506
+14m 40s (- 2m 35s) (17000 85%) 0.5270
+15m 33s (- 1m 43s) (18000 90%) 0.7377
+16m 25s (- 0m 51s) (19000 95%) 0.6184
+17m 18s (- 0m 0s) (20000 100%) 0.6549
+Examples of output for a random sample of training examples
+INPUT:  ???????
+TARGET:  krivini
+OUTPUT:  krivini<EOS>
+
+INPUT:  ????
+TARGET:  essen
+OUTPUT:  esen<EOS>
+
+INPUT:  ??????
+TARGET:  chiflik
+OUTPUT:  chiflik<EOS>
+
+INPUT:  ???????
+TARGET:  bajkovo
+OUTPUT:  baykovo<EOS>
+
+INPUT:  ?????
+TARGET:  potok
+OUTPUT:  potok<EOS>
+
+Evaluate on unseen data
+Read 475 word pairs
+Keeping 475 word pairs for which all characters are in vocabulary
+Average edit distance 1.1958
