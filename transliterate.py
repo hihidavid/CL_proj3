@@ -37,12 +37,17 @@ EOS_token = 1
 # avoid vanishing/exploding gradients. 
 ################
 class EncoderRNN(nn.Module):
+    # http://pytorch.org/docs/master/nn.html
     def __init__(self, input_size, hidden_size, n_layers=1):
         super(EncoderRNN, self).__init__()
         self.n_layers = n_layers
         self.hidden_size = hidden_size
-
+        # input_size: 85, hidden_size: 256
+        # <class 'torch.nn.modules.sparse.Embedding'>
+        # Embedding(num_embeddings, embedding_dim)
         self.embedding = nn.Embedding(input_size, hidden_size)
+        # <class 'torch.nn.modules.rnn.GRU'>
+        # GRU(input_size, hidden_size, num_layers=1)
         self.gru = nn.GRU(hidden_size, hidden_size)
 
     # Note that we only have to define the forward function. It 
@@ -97,6 +102,7 @@ class DecoderRNN(nn.Module):
 # RNN with attention and dropout
 # as illustrated here http://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html#attention-decoder
 class AttnDecoderRNN(nn.Module):
+    # 256, 31, 1
     def __init__(self, hidden_size, output_size, n_layers=1, dropout_p=0.1, max_length=20):
         super(AttnDecoderRNN, self).__init__()
         self.hidden_size = hidden_size

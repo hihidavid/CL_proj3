@@ -3,11 +3,13 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
+
 # convert seconds to minutes
 def asMinutes(s):
     m = math.floor(s / 60)
     s -= m * 60
     return '%dm %ds' % (m, s)
+
 
 # print time elapsed and estimated time remaining given current time and progress
 def timeSince(since, percent):
