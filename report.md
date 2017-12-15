@@ -29,20 +29,22 @@
 ## Q3 Select hyperparameters  
 * Describe the experiments you ran to select those values, and explain your reasoning.  
 
-  * n_iters, learning_rate = 0.01
+  * n_iters
 
   | n_iters                   | 5000       | 10000      | 15000      | 20000      | 25000      |
   | ------------------------- | ---------- | ---------- | ---------- | ---------- | ---------- |
-  | **Average edit distance** | **1.4063** | **1.2674** | **1.0926** | **1.3600** | **2.9958** |
+  | **Average edit distance** | **1.4063** | **1.2674** | **1.0926** | **1.1832** | **2.9958** |
 
-  * learning_rate, n_iters = 15000
+  We can see that when `n_iters` is too small or too large, the model under-fits or over-fits.
 
-  | learning_rate             | 0.001  | 0.005  | 0.01   | 0.05   | 0.1     |
-  | ------------------------- | ------ | ------ | ------ | ------ | ------- |
-  | **Average edit distance** | 1.7768 | 0.8211 | 1.0926 | 3.1284 | 11.1326 |
+  * learning_rate
 
-  From experimental results, we can see that the best model is the one with `n_iter=15000` and `learning_rate=0.005`.
+  | learning_rate             | 0.001      | 0.005      | 0.01       | 0.05       | 0.1         |
+  | ------------------------- | ---------- | ---------- | ---------- | ---------- | ----------- |
+  | **Average edit distance** | **1.3705** | **0.7600** | **1.1832** | **2.9937** | **16.7221** |
 
+
+  We can see that when `learning_rate` is small, the model converges slowly and under-fits. When `learning_rate` is too large, the model cannot converge well.
 
 ## Q4 and Q5 teacher forcing  
 
@@ -53,8 +55,18 @@
 
 * Investigate the impact of teacher forcing empirically. Report learning curves for 0.1, 0.5 and 0.9, and explain what you observe.
   * `teacher_forcing_ratio=0.1`
+
+    ![learningcurve_01](C:\Users\Yang\Documents\GitHub\CL_proj3\learningcurve_01.png)
+
   * `teacher_forcing_ratio=0.5`
+
+    ![learningcurve_05](C:\Users\Yang\Documents\GitHub\CL_proj3\learningcurve_05.png)
+
   * `teacher_forcing_ratio=0.9`
+
+    ![learningcurve_09](C:\Users\Yang\Documents\GitHub\CL_proj3\learningcurve_09.png)
+
+    We can see that as `teacher_forcing_ratio` increases, the loss decreases faster. In other words, using teacher forcing can make learning converge faster.
 
 
 ## Q6 attention model  
@@ -64,12 +76,27 @@
 
 
 ## Q7 noattention.py  
-* use a sequence-to-sequence model without attention  
-  * Average edit distance = 1.2716
+* Without attention
+
+  * learning curve
+
+    ![learningcurve_noattention](C:\Users\Yang\Documents\GitHub\CL_proj3\learningcurve_noattention.png)
+
+  * average edit distance at test time  = 1.4589
+
+* With attention
+
+  * learning curve
+
+    ![learningcurve_05](C:\Users\Yang\Documents\GitHub\CL_proj3\learningcurve_05.png)
+
+  * average edit distance at test time = 1.1832
 
 
-## Q8 comparision  
+## Q8 comparison  
 * comparing the behavior of the sequence-to-sequence model with and without attention empirically, at training and test time  
+  * From the results in Q7, we observe that during training, the seq2seq model with attention converges faster than the one without attention. 
+  * During test time, the average edit distance of seq2seq model with attention  (1.1832) is smaller than the one without attention (1.4589).
 
 
 # Part II  
