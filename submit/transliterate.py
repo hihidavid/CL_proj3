@@ -58,9 +58,7 @@ class EncoderRNN(nn.Module):
         # embedded shape [1, 256], after reshape [1, 1, 256]
         embedded = self.embedding(input).view(1, 1, -1)
         output = embedded
-        # TODO: I think no need to have for loop. n_layers can be used in constructor.
         for i in range(self.n_layers):
-            # output, hn = gru(input, h0)
             output, hidden = self.gru(output, hidden)
         return output, hidden
 
@@ -124,15 +122,12 @@ class AttnDecoderRNN(nn.Module):
     def forward(self, input, hidden, encoder_output, encoder_outputs):
         embedded = self.embedding(input).view(1, 1, -1)
         embedded = self.dropout(embedded)
-        # emb: [1, 1, 256], hidden [1, 1, 256], cat: [1, 512], attn: [1, 20]
         attn_weights = F.softmax(
             self.attn(torch.cat((embedded[0], hidden[0]), 1)))
-        # attn_unsqueeze: [1, 1, 20], encoder_outputs_unsqueeze: [1, 20, 256], attn_applied: [1, 1, 256]
         attn_applied = torch.bmm(attn_weights.unsqueeze(0),
                                  encoder_outputs.unsqueeze(0))
-        # output: [1, 512]
+
         output = torch.cat((embedded[0], attn_applied[0]), 1)
-        # combine: [1, 256], output: [1, 1, 256]
         output = self.attn_combine(output).unsqueeze(0)
 
         for i in range(self.n_layers):
@@ -185,17 +180,12 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     input_length = input_variable.size()[0]
     target_length = target_variable.size()[0]
 
-    # [20, 256]
     encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
     encoder_outputs = encoder_outputs.cuda() if use_cuda else encoder_outputs
 
     loss = 0
-    # TODO: for loop not needed.
-
 
     for ei in range(input_length):
-        # output (seq_len, batch, hidden_size * num_directions) [1, 1, 256]
-        # h_n (num_layers * num_directions, batch, hidden_size) [1, 1, 256]
         encoder_output, encoder_hidden = encoder(input_variable[ei], encoder_hidden)
         encoder_outputs[ei] = encoder_output[0][0]
 
@@ -204,19 +194,15 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
 
     decoder_hidden = encoder_hidden
 
-    # TODO: change teacher forcing
     teacher_forcing_ratio = 0.5
 
     use_teacher_forcing = True if random.random() < teacher_forcing_ratio else False
 
     if use_teacher_forcing:
         # Teacher forcing: Feed the target as the next input
-        # TODO: for loop
         for di in range(target_length):
-            # decoder_output: [1, 31], hidden: [1, 1, 256], attention: [1, 20]
             decoder_output, decoder_hidden, decoder_attention = decoder(
                 decoder_input, decoder_hidden, encoder_output, encoder_outputs)
-            # input: (minibatch, Class) [1, 31], target: (minibatch) [1]
             loss += criterion(decoder_output, target_variable[di])
             decoder_input = target_variable[di]
 
@@ -224,7 +210,7 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
         for di in range(target_length):
             decoder_output, decoder_hidden, decoder_attention = decoder(
                 decoder_input, decoder_hidden, encoder_output, encoder_outputs)
-            # [1, 1]
+
             topv, topi = decoder_output.data.topk(1)
             ni = topi[0][0]
             
@@ -255,9 +241,7 @@ def trainIters(pairs, input_lang, output_lang, encoder, decoder, n_iters, print_
     # define criterion and optimization algorithm
     encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
     decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
-    # TODO: training data generation
     training_pairs = [variablesFromPair(random.choice(pairs), input_lang, output_lang) for i in range(n_iters)]
-    # TODO: other loss function? MSE
     criterion = nn.NLLLoss()
 
     # now proceed one iteration at a time

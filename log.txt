@@ -3,48 +3,52 @@ Read 4997 word pairs
 Vocabulary statistics
 bg 85
 en 31
-0m 51s (- 16m 10s) (1000 5%) 2.4388
-1m 40s (- 15m 8s) (2000 10%) 1.9816
-2m 33s (- 14m 27s) (3000 15%) 1.5319
-3m 24s (- 13m 39s) (4000 20%) 1.2404
-4m 16s (- 12m 49s) (5000 25%) 1.0329
-5m 7s (- 11m 58s) (6000 30%) 0.9632
-5m 59s (- 11m 7s) (7000 35%) 0.9344
-6m 51s (- 10m 17s) (8000 40%) 0.8658
-7m 43s (- 9m 26s) (9000 45%) 0.7848
-8m 36s (- 8m 36s) (10000 50%) 0.7454
-9m 28s (- 7m 45s) (11000 55%) 0.6713
-10m 20s (- 6m 53s) (12000 60%) 0.6946
-11m 12s (- 6m 1s) (13000 65%) 0.5767
-12m 4s (- 5m 10s) (14000 70%) 0.6563
-12m 56s (- 4m 18s) (15000 75%) 0.6349
-13m 48s (- 3m 27s) (16000 80%) 0.5506
-14m 40s (- 2m 35s) (17000 85%) 0.5270
-15m 33s (- 1m 43s) (18000 90%) 0.7377
-16m 25s (- 0m 51s) (19000 95%) 0.6184
-17m 18s (- 0m 0s) (20000 100%) 0.6549
+C:/Users/Jackpot/Desktop/p3/transliterate_bi.py:129: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  self.attn(torch.cat((embedded[0], hidden.view(1, 512)), 1)))
+C:/Users/Jackpot/Desktop/p3/transliterate_bi.py:142: UserWarning: Implicit dimension choice for log_softmax has been deprecated. Change the call to include dim=X as an argument.
+  output = F.log_softmax(self.out(output[0]))
+0m 50s (- 16m 7s) (1000 5%) 2.3106
+1m 42s (- 15m 20s) (2000 10%) 1.7524
+2m 33s (- 14m 27s) (3000 15%) 1.2198
+3m 24s (- 13m 37s) (4000 20%) 1.0091
+4m 16s (- 12m 48s) (5000 25%) 0.7522
+5m 9s (- 12m 1s) (6000 30%) 0.7709
+6m 1s (- 11m 11s) (7000 35%) 0.6940
+6m 52s (- 10m 19s) (8000 40%) 0.7015
+7m 44s (- 9m 27s) (9000 45%) 0.5347
+8m 37s (- 8m 37s) (10000 50%) 0.6492
+9m 31s (- 7m 47s) (11000 55%) 0.5675
+10m 23s (- 6m 55s) (12000 60%) 0.5402
+11m 15s (- 6m 3s) (13000 65%) 0.5025
+12m 7s (- 5m 11s) (14000 70%) 0.4891
+13m 0s (- 4m 20s) (15000 75%) 0.5088
+13m 53s (- 3m 28s) (16000 80%) 0.4973
+14m 45s (- 2m 36s) (17000 85%) 0.5223
+15m 39s (- 1m 44s) (18000 90%) 0.5626
+16m 31s (- 0m 52s) (19000 95%) 0.5254
+17m 25s (- 0m 0s) (20000 100%) 0.4952
 Examples of output for a random sample of training examples
-INPUT:  ???????
-TARGET:  krivini
-OUTPUT:  krivini<EOS>
-
-INPUT:  ????
-TARGET:  essen
-OUTPUT:  esen<EOS>
+INPUT:  ??????
+TARGET:  nanevo
+OUTPUT:  nanevo<EOS>
 
 INPUT:  ??????
-TARGET:  chiflik
-OUTPUT:  chiflik<EOS>
+TARGET:  svetlya
+OUTPUT:  svetlya<EOS>
+
+INPUT:  ??????
+TARGET:  surnec
+OUTPUT:  surnets<EOS>
 
 INPUT:  ???????
-TARGET:  bajkovo
-OUTPUT:  baykovo<EOS>
+TARGET:  chapaevo
+OUTPUT:  chapaevo<EOS>
 
-INPUT:  ?????
-TARGET:  potok
-OUTPUT:  potok<EOS>
+INPUT:  ????????
+TARGET:  kon'ovec
+OUTPUT:  kon'ovets<EOS>
 
 Evaluate on unseen data
 Read 475 word pairs
 Keeping 475 word pairs for which all characters are in vocabulary
-Average edit distance 1.1958
+Average edit distance 1.1663

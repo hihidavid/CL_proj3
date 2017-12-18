@@ -48,7 +48,7 @@ class EncoderRNN(nn.Module):
         self.embedding = nn.Embedding(input_size, hidden_size)
         # <class 'torch.nn.modules.rnn.GRU'>
         # GRU(input_size, hidden_size, num_layers=1)
-        self.gru = nn.GRU(hidden_size, hidden_size)
+        self.gru = nn.GRU(hidden_size, hidden_size, num_layers=n_layers, bidirectional=True)
 
     # Note that we only have to define the forward function. It 
     # will be used to construct the computation graph dynamically
@@ -65,7 +65,7 @@ class EncoderRNN(nn.Module):
         return output, hidden
 
     def initHidden(self):
-        result = Variable(torch.zeros(1, 1, self.hidden_size))
+        result = Variable(torch.zeros(2, 1, self.hidden_size))
         if use_cuda:
             return result.cuda()
         else:
@@ -83,7 +83,7 @@ class DecoderRNN(nn.Module):
         self.hidden_size = hidden_size
 
         self.embedding = nn.Embedding(output_size, hidden_size)
-        self.gru = nn.GRU(hidden_size, hidden_size)
+        self.gru = nn.GRU(hidden_size, hidden_size, bidirectional=True)
         self.out = nn.Linear(hidden_size, output_size)
         self.softmax = nn.LogSoftmax()
 
@@ -115,18 +115,18 @@ class AttnDecoderRNN(nn.Module):
         self.max_length = max_length
 
         self.embedding = nn.Embedding(self.output_size, self.hidden_size)
-        self.attn = nn.Linear(self.hidden_size * 2, self.max_length)
-        self.attn_combine = nn.Linear(self.hidden_size * 2, self.hidden_size)
+        self.attn = nn.Linear(self.hidden_size * 3, self.max_length)
+        self.attn_combine = nn.Linear(self.hidden_size * 3, self.hidden_size)
         self.dropout = nn.Dropout(self.dropout_p)
-        self.gru = nn.GRU(self.hidden_size, self.hidden_size)
-        self.out = nn.Linear(self.hidden_size, self.output_size)
+        self.gru = nn.GRU(self.hidden_size, self.hidden_size, bidirectional=True)
+        self.out = nn.Linear(self.hidden_size*2, self.output_size)
 
     def forward(self, input, hidden, encoder_output, encoder_outputs):
         embedded = self.embedding(input).view(1, 1, -1)
         embedded = self.dropout(embedded)
         # emb: [1, 1, 256], hidden [1, 1, 256], cat: [1, 512], attn: [1, 20]
         attn_weights = F.softmax(
-            self.attn(torch.cat((embedded[0], hidden[0]), 1)))
+            self.attn(torch.cat((embedded[0], hidden.view(1, 512)), 1)))
         # attn_unsqueeze: [1, 1, 20], encoder_outputs_unsqueeze: [1, 20, 256], attn_applied: [1, 1, 256]
         attn_applied = torch.bmm(attn_weights.unsqueeze(0),
                                  encoder_outputs.unsqueeze(0))
@@ -143,7 +143,7 @@ class AttnDecoderRNN(nn.Module):
         return output, hidden, attn_weights
 
     def initHidden(self):
-        result = Variable(torch.zeros(1, 1, self.hidden_size))
+        result = Variable(torch.zeros(2, 1, self.hidden_size))
         if use_cuda:
             return result.cuda()
         else:
@@ -186,7 +186,7 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     target_length = target_variable.size()[0]
 
     # [20, 256]
-    encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
+    encoder_outputs = Variable(torch.zeros(max_length, 2*encoder.hidden_size))
     encoder_outputs = encoder_outputs.cuda() if use_cuda else encoder_outputs
 
     loss = 0
@@ -298,7 +298,7 @@ def generate(encoder, decoder, word, max_length=20):
     input_length = input_variable.size()[0]
     encoder_hidden = encoder.initHidden()
 
-    encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
+    encoder_outputs = Variable(torch.zeros(max_length, 2*encoder.hidden_size))
     encoder_outputs = encoder_outputs.cuda() if use_cuda else encoder_outputs
 
     # encode input word

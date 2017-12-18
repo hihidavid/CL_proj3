@@ -1,0 +1,19 @@
+pydev debugger: process 2492 is connecting
+
+Reading lines in data/en_bg.train.txt
+Read 4997 word pairs
+Vocabulary statistics
+bg 85
+en 31
+Backend Qt5Agg is interactive backend. Turning interactive mode on.
+C:/Users/Jackpot/Desktop/p3/transliterate.py:129: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  self.attn(torch.cat((embedded[0], hidden[0]), 1)))
+C:/Users/Jackpot/Desktop/p3/transliterate.py:142: UserWarning: Implicit dimension choice for log_softmax has been deprecated. Change the call to include dim=X as an argument.
+  output = F.log_softmax(self.out(output[0]))
+Python 3.6.3 |Anaconda, Inc.| (default, Nov  8 2017, 15:10:56) [MSC v.1900 64 bit (AMD64)] on win32
+torch.Size([9, 1])
+Variable containing:
+ 18
+[torch.cuda.LongTensor of size 1 (GPU 0)]
+
+torch.Size([1, 31])
